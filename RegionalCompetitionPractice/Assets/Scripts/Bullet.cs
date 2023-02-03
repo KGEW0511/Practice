@@ -8,7 +8,6 @@ public class Bullet : MonoBehaviour
 
     public float bulletSpeed;
 
-    float h;
     float v;
     void Awake()
     {
@@ -17,7 +16,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        Vector2 bulletVec = new Vector2(h,v);
+        Vector2 bulletVec = new Vector2(0,2);
         rigid.velocity = bulletVec * bulletSpeed;
     }
 }
