@@ -30,7 +30,7 @@ public class Background : MonoBehaviour
 
             int startIndexSave = startIndex;
             startIndex = endIndex;
-            endIndex = (startIndexSave-1) == -1 ? sprites.Length-1 : startIndexSave - 1;
+            endIndex = (startIndexSave-1 == -1) ? sprites.Length-1 : startIndexSave - 1;
         }
     }
 }

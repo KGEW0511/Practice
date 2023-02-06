@@ -23,8 +23,13 @@ public class PlayerMove : MonoBehaviour
 
     void Update()
     {
+        Move();
+    }
+
+    void Move()
+    {
         h = Input.GetAxisRaw("Horizontal");
-        if((IsTouchRight && h == 1) || (IsTouchLeft && h == -1))
+        if ((IsTouchRight && h == 1) || (IsTouchLeft && h == -1))
         {
             h = 0;
         }
@@ -35,11 +40,11 @@ public class PlayerMove : MonoBehaviour
             v = 0;
         }
 
-        animator.SetInteger("Horizontal",(int)h);
-    }
+        if (Input.GetButtonDown("Horizontal") || Input.GetButtonUp("Horizontal"))
+        {
+            animator.SetInteger("Horizontal", (int)h);
+        }
 
-    void FixedUpdate()
-    {
         Vector2 moveVec = new Vector2(h, v);
         rigid.velocity = moveVec * Speed;
     }
