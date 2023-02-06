@@ -13,6 +13,9 @@ public class PlayerMove : MonoBehaviour
     public bool IsTouchRight;
     public bool IsTouchLeft;
 
+    public int life;
+    public int score;
+
     float h;
     float v;
     void Awake()
