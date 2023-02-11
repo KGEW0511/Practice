@@ -14,7 +14,7 @@ public class Pain_Bar : MonoBehaviour
 
     void Awake()
     {
-        maxPain = player.life;
+        maxPain = player.pain;
     }
 
     void Update()

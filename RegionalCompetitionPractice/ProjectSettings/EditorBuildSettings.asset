@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Throat.unity
+    path: Assets/Resourses/Vertical 2D Shooting BE4/Sprites/Scenes/Throat.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
