@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameManager[] enemyObjs;
+    public GameObject[] enemyObjs;
     public Transform[] spawnPoints;
+
+    public GameObject player;
+    public Text scoreText;
+    public Image[] lifeImage;
+    public GameObject gameOverSet;
 
     public float maxSpawnDelay;
     public float curSpawnDelay;
@@ -20,6 +27,14 @@ public class GameManager : MonoBehaviour
             maxSpawnDelay = Random.Range(0.5f, 3f);
             curSpawnDelay = 0;
         }
+
+        Player playerLogic = player.GetComponent<Player>();
+        scoreText.text = string.Format("{0:n0}", playerLogic.score);
+
+        if(playerLogic.life <= 0)
+        { 
+
+        }
     }
 
     void SpawnEnemy()
@@ -27,8 +42,12 @@ public class GameManager : MonoBehaviour
         int ranEnemy = Random.Range(0, 3);
         int ranPoint = Random.Range(0, 5);
 
-        Instantiate(enemyObjs[ranEnemy],
-            spawnPoints[ranPoint].position,
-            spawnPoints[ranPoint].rotation);
+        GameObject enemy = Instantiate(enemyObjs[ranEnemy],
+                                    spawnPoints[ranPoint].position,
+                                    spawnPoints[ranPoint].rotation);
+
+        Rigidbody2D rigid = enemy.GetComponent<Rigidbody2D>();
+        Enemy enemyLogic = enemy.GetComponent<Enemy>();
+        enemyLogic.player = player;
     }
 }
