@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public GameObject bulletObjA;
     public GameObject bulletObjB;
 
+    public int pain;
     public int life;
     public int score;
 

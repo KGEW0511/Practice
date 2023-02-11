@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         Player playerLogic = player.GetComponent<Player>();
         scoreText.text = string.Format("{0:n0}", playerLogic.score);
 
-        if(playerLogic.life <= 0)
+        if(playerLogic.life <= 0 || playerLogic.pain >= 100)
         { 
 
         }
