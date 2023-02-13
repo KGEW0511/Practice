@@ -152,10 +152,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: B
+  power: 0
   speed: 4
-  enemyScore: 300
+  curShotDelay: 0
+  maxShotDelay: 1
   health: 3
+  enemyScore: 300
   sprites:
   - {fileID: -1147401495359466748, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: -7844560889915226194, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   player: {fileID: 0}
+  bulletObjA: {fileID: 8661016165251632107, guid: 49619a586decc86449e62cf08e1a312b, type: 3}
+  bulletObjB: {fileID: 1637711420463953324, guid: 0b8fc4855ba643e4999630fdb601e766, type: 3}
+  bulletObjC: {fileID: 3801563450405626530, guid: f84ee9f6e5df8e3428232b11cdb017b5, type: 3}

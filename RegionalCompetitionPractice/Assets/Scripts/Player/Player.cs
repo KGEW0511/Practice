@@ -6,22 +6,24 @@ public class Player : MonoBehaviour
 {
     Rigidbody2D rigid;
     Animator animator;
+    SpriteRenderer spriteRenderer;
 
     public float speed;
     public float power;
     public float maxShotDelay;
     public float curShotDelay;
+    public float pain;
+    public float life;
 
     public bool IsTouchTop;
     public bool IsTouchBottom;
     public bool IsTouchRight;
     public bool IsTouchLeft;
+    public bool IsInvincibility;
 
     public GameObject bulletObjA;
     public GameObject bulletObjB;
 
-    public int pain;
-    public int life;
     public int score;
 
     float h;
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -142,6 +145,25 @@ public class Player : MonoBehaviour
         rigid.velocity = moveVec * speed;
     }
 
+    void OnHit(float dmg)
+    {
+        life -= dmg;
+        spriteRenderer.color = new Color(1, 1, 1, 0.4f);
+        IsInvincibility = true;
+        Invoke("Recovery", 1.5f);
+
+        if (life <= 0)
+        {
+            
+        }
+    }
+
+    void Recovery()
+    {
+        spriteRenderer.color = new Color(1, 1, 1, 1f);
+        IsInvincibility = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Border")
@@ -162,6 +184,27 @@ public class Player : MonoBehaviour
                     break;
 
             }
+        }
+        if(collision.gameObject.tag == "Enemy" && !IsInvincibility)
+        {
+
+            switch (collision.gameObject.name)
+            {
+                case "Enemy A":
+                    break;
+                case "Enemy B":
+                    break;
+                case "Enemy C":
+                    break;
+                case "Boss":
+                    break;
+            }
+        }
+        if(collision.gameObject.tag == "EnemyBullet" && !IsInvincibility)
+        {
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+            OnHit(bullet.dmg);
+            Destroy(collision.gameObject);
         }
     }
 
