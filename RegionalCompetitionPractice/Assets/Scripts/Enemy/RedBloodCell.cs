@@ -5,9 +5,10 @@ using UnityEngine;
 public class RedBloodCell : MonoBehaviour
 {
     Rigidbody2D rigid;
-    Player player;
 
-    public int painPower;
+
+    public float painPower;
+
     public int speed;
     void Awake()
     {
@@ -18,12 +19,12 @@ public class RedBloodCell : MonoBehaviour
         rigid.velocity = Vector2.down * speed;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "PlayerBullet")
         {
+            GameObject.Find("Player").GetComponent<Player>().pain -= painPower;
             Destroy(gameObject);
-            player.pain += painPower;
         }
     }
 }

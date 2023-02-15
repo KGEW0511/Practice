@@ -73,9 +73,9 @@ public class Player : MonoBehaviour
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 3:
-                GameObject bulletRR = Instantiate(bulletObjA, transform.position + Vector3.right * 0.25f, transform.rotation);
+                GameObject bulletRR = Instantiate(bulletObjA, transform.position + Vector3.right * 0.3f, transform.rotation);
                 GameObject bulletCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLL = Instantiate(bulletObjA, transform.position + Vector3.left * 0.25f, transform.rotation);
+                GameObject bulletLL = Instantiate(bulletObjA, transform.position + Vector3.left * 0.3f, transform.rotation);
 
                 Rigidbody2D rigidRR = bulletRR.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigidCC = bulletCC.GetComponent<Rigidbody2D>();
@@ -86,9 +86,9 @@ public class Player : MonoBehaviour
                 rigidLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 4:
-                GameObject bulletRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.25f, transform.rotation);
+                GameObject bulletRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.35f, transform.rotation);
                 GameObject bulletCCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.25f, transform.rotation);
+                GameObject bulletLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.35f, transform.rotation);
 
                 Rigidbody2D rigidRRR = bulletRRR.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigidCCC = bulletCCC.GetComponent<Rigidbody2D>();
@@ -99,11 +99,11 @@ public class Player : MonoBehaviour
                 rigidLLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 5:
-                GameObject bulletRRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.5f, transform.rotation);
-                GameObject bulletRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.25f, transform.rotation);
+                GameObject bulletRRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.7f, transform.rotation);
+                GameObject bulletRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.35f, transform.rotation);
                 GameObject bulletCCCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.25f, transform.rotation);
-                GameObject bulletLLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.5f, transform.rotation);
+                GameObject bulletLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.35f, transform.rotation);
+                GameObject bulletLLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.7f, transform.rotation);
 
                 Rigidbody2D rigidRRRRR = bulletRRRRR.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigidRRRR = bulletRRRR.GetComponent<Rigidbody2D>();
@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Border")
+        if(collision.gameObject.CompareTag("Border"))
         {
             switch (collision.gameObject.name)
             {
@@ -185,9 +185,8 @@ public class Player : MonoBehaviour
 
             }
         }
-        if(collision.gameObject.tag == "Enemy" && !IsInvincibility)
+        else if(collision.gameObject.CompareTag("Enemy") && !IsInvincibility)
         {
-
             switch (collision.gameObject.name)
             {
                 case "Enemy A":
@@ -200,7 +199,7 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-        if(collision.gameObject.tag == "EnemyBullet" && !IsInvincibility)
+        else if(collision.gameObject.tag == "EnemyBullet" && !IsInvincibility)
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             OnHit(bullet.dmg);
@@ -210,7 +209,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Border")
+        if (collision.gameObject.CompareTag("Border"))
         {
             switch (collision.gameObject.name)
             {
