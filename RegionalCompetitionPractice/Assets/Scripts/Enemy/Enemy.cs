@@ -88,9 +88,15 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("BorderBullet"))
+        if (collision.gameObject.CompareTag("Border"))
         {
-            Destroy(gameObject);
+            switch (collision.gameObject.name)
+            {
+                case "Bottom":
+                    GameObject.Find("Player").GetComponent<Player>().pain += (power / 2);
+                    Destroy(gameObject);
+                    break;
+            }
         }
         else if (collision.gameObject.CompareTag("PlayerBullet"))
         {

@@ -29,5 +29,9 @@ public class WhiteBloodCell : MonoBehaviour
 
             Destroy(gameObject);
         }
+        else if (collision.gameObject.CompareTag("BorderBullet"))
+        {
+            Destroy(gameObject);
+        }
     }
 }

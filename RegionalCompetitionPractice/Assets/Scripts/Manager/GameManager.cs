@@ -12,33 +12,28 @@ public class GameManager : MonoBehaviour
     public GameObject[] cellObjs;
     public Transform[] cellSpawnPoints;
 
+    public GameObject bossObjs;
+    public Transform bossSpawnPoints;
+
     public GameObject player;
     public Text scoreText;
-    public GameObject gameOverSet;
 
     public float maxSpawnDelay;
     public float curSpawnDelay;
 
-    public int CellSpawn;
+    public bool isBossSpawn;
 
+    public int stage;
+    public int cellSpawn;
+    public int bossSpawn;
+
+    void Awake()
+    {
+        isBossSpawn = false;
+    }
     void Update()
     {
-        curSpawnDelay += Time.deltaTime;
-
-        if(curSpawnDelay > maxSpawnDelay)
-        {
-            SpawnEnemy();
-
-            CellSpawn++;
-            maxSpawnDelay = Random.Range(0.5f, 3f);
-            curSpawnDelay = 0;
-        }
-
-        if(CellSpawn >= 5)
-        {
-            SpawnCells();
-            CellSpawn = 0;
-        }
+        Spawn();
 
         Player playerLogic = player.GetComponent<Player>();
         scoreText.text = string.Format("{0:n0}", playerLogic.score);
@@ -49,16 +44,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Spawn()
+    {
+        curSpawnDelay += Time.deltaTime;
+
+        if (curSpawnDelay > maxSpawnDelay && !isBossSpawn)
+        {
+            SpawnEnemy();
+
+            cellSpawn++;
+            maxSpawnDelay = Random.Range(0.5f, 3f);
+            curSpawnDelay = 0;
+        }
+        else if (cellSpawn >= 5)
+        {
+            SpawnCells();
+            cellSpawn = 0;
+            bossSpawn++;
+        }
+        else if (bossSpawn >= 5 && !isBossSpawn)
+        {
+            GameObject boss = Instantiate(bossObjs,
+                                    bossSpawnPoints.position,
+                                    bossSpawnPoints.rotation);
+            Rigidbody2D rigid = boss.GetComponent<Rigidbody2D>();
+            isBossSpawn = true;
+        }
+    }
+
     void SpawnCells()
     {
         int ranCell = Random.Range(0, 2);
-        int ranPoint = Random.Range(0, 3);
+        int ranPoint = Random.Range(0, 5);
 
-        GameObject Cell = Instantiate(cellObjs[ranCell],
+        GameObject cell = Instantiate(cellObjs[ranCell],
                                     cellSpawnPoints[ranPoint].position,
                                     cellSpawnPoints[ranPoint].rotation);
 
-        Rigidbody2D rigid = Cell.GetComponent<Rigidbody2D>();
+        Rigidbody2D rigid = cell.GetComponent<Rigidbody2D>();
     }
     
     void SpawnEnemy()

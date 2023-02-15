@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: C
-  power: 30
+  power: 15
   speed: 2
   curShotDelay: 0
   maxShotDelay: 2
