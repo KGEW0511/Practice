@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rigid;
     Animator animator;
     SpriteRenderer spriteRenderer;
+    AudioSource audioSource;
 
     public float speed;
     public float power;
@@ -21,6 +22,8 @@ public class Player : MonoBehaviour
     public bool IsTouchLeft;
     public bool IsInvincibility;
 
+    public AudioClip hitSound;
+    public AudioClip shootSound;
     public GameObject bulletObjA;
     public GameObject bulletObjB;
 
@@ -30,6 +33,8 @@ public class Player : MonoBehaviour
     float v;
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+        audioSource = GetComponent<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -118,6 +123,9 @@ public class Player : MonoBehaviour
                 rigidLLLLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
         }
+        audioSource.clip = shootSound;
+        audioSource.loop = false;
+        audioSource.Play();
 
         curShotDelay = 0;
     }
@@ -147,6 +155,9 @@ public class Player : MonoBehaviour
 
     void OnHit(float dmg)
     {
+        audioSource.clip = hitSound;
+        audioSource.loop = false;
+        audioSource.Play();
         life -= dmg;
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
         IsInvincibility = true;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float dmg;
+
     public bool isDmg;
     public bool isPlayerBullet;
 
