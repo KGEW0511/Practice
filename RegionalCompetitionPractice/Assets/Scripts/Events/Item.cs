@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
             switch (itemNum)
             {
                 case 1:
-                    if (player.power == 5)
+                    if (player.power == 4)
                     {
                         break;
                     }
@@ -40,13 +40,13 @@ public class Item : MonoBehaviour
                     }
                     break;
                 case 3:
-                    if (player.pain - 20 < 0)
+                    if (player.fuel - 20 < 0)
                     {
-                        player.pain = 0;
+                        player.fuel = 0;
                     }
                     else
                     {
-                        player.pain -= 20;
+                        player.fuel -= 20;
                     }
                     break;
             }

@@ -13,19 +13,17 @@ public class Player : MonoBehaviour
     public float power;
     public float maxShotDelay;
     public float curShotDelay;
-    public float pain;
+    public float fuel;
     public float life;
 
-    public bool IsTouchTop;
-    public bool IsTouchBottom;
-    public bool IsTouchRight;
-    public bool IsTouchLeft;
     public bool IsInvincibility;
 
+    public Sprite[] sprites;
     public AudioClip hitSound;
     public AudioClip shootSound;
     public GameObject bulletObjA;
     public GameObject bulletObjB;
+    public SaveManager manager;
 
     public int score;
 
@@ -33,11 +31,13 @@ public class Player : MonoBehaviour
     float v;
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        manager = GameObject.FindObjectOfType<SaveManager>();
+        spriteRenderer.sprite = sprites[manager.spriteColor];
     }
 
     void Update()
@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (!Input.GetButton("Fire1"))
+        if (!Input.GetKey(KeyCode.D))
             return;
 
         if (curShotDelay < maxShotDelay)
@@ -62,66 +62,7 @@ public class Player : MonoBehaviour
 
         switch (power)
         {
-            case 1:
-                GameObject bullet = Instantiate(bulletObjA, transform.position, transform.rotation);
-                Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
-                rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                break;
-            case 2:
-                GameObject bulletR = Instantiate(bulletObjA, transform.position + Vector3.right * 0.1f, transform.rotation);
-                GameObject bulletL = Instantiate(bulletObjA, transform.position + Vector3.left * 0.1f, transform.rotation);
-
-                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
-
-                rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                break;
-            case 3:
-                GameObject bulletRR = Instantiate(bulletObjA, transform.position + Vector3.right * 0.3f, transform.rotation);
-                GameObject bulletCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLL = Instantiate(bulletObjA, transform.position + Vector3.left * 0.3f, transform.rotation);
-
-                Rigidbody2D rigidRR = bulletRR.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidCC = bulletCC.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidLL = bulletLL.GetComponent<Rigidbody2D>();
-
-                rigidRR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidCC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                break;
-            case 4:
-                GameObject bulletRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.35f, transform.rotation);
-                GameObject bulletCCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.35f, transform.rotation);
-
-                Rigidbody2D rigidRRR = bulletRRR.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidCCC = bulletCCC.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidLLL = bulletLLL.GetComponent<Rigidbody2D>();
-
-                rigidRRR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidCCC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidLLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                break;
-            case 5:
-                GameObject bulletRRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.7f, transform.rotation);
-                GameObject bulletRRRR = Instantiate(bulletObjB, transform.position + Vector3.right * 0.35f, transform.rotation);
-                GameObject bulletCCCC = Instantiate(bulletObjB, transform.position, transform.rotation);
-                GameObject bulletLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.35f, transform.rotation);
-                GameObject bulletLLLLL = Instantiate(bulletObjB, transform.position + Vector3.left * 0.7f, transform.rotation);
-
-                Rigidbody2D rigidRRRRR = bulletRRRRR.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidRRRR = bulletRRRR.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidCCCC = bulletCCCC.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidLLLL = bulletLLLL.GetComponent<Rigidbody2D>();
-                Rigidbody2D rigidLLLLL = bulletLLLLL.GetComponent<Rigidbody2D>();
-
-                rigidRRRRR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidRRRR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidCCCC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidLLLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                rigidLLLLL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                break;
+            
         }
         audioSource.clip = shootSound;
         audioSource.loop = false;
@@ -132,21 +73,27 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        h = Input.GetAxisRaw("Horizontal");
-        if ((IsTouchRight && h == 1) || (IsTouchLeft && h == -1))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            h = 0;
+            h = 1;
         }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            h = -1;
+        }
+        else h = 0;
 
-        v = Input.GetAxisRaw("Vertical");
-        if ((IsTouchTop && v == 1) || (IsTouchBottom && v == -1))
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            v = 1;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            v = -1;
+        }
+        else
         {
             v = 0;
-        }
-
-        if (Input.GetButtonDown("Horizontal") || Input.GetButtonUp("Horizontal"))
-        {
-            animator.SetInteger("Horizontal", (int)h);
         }
 
         Vector2 moveVec = new Vector2(h, v);
@@ -177,26 +124,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("Border"))
-        {
-            switch (collision.gameObject.name)
-            {
-                case "Top":
-                    IsTouchTop = true;
-                    break;
-                case "Bottom":
-                    IsTouchBottom = true;
-                    break;
-                case "Right":
-                    IsTouchRight = true;
-                    break;
-                case "Left":
-                    IsTouchLeft = true;
-                    break;
-
-            }
-        }
-        else if(collision.gameObject.CompareTag("Enemy") && !IsInvincibility)
+        if(collision.gameObject.CompareTag("Enemy") && !IsInvincibility)
         {
             switch (collision.gameObject.name)
             {
@@ -215,29 +143,6 @@ public class Player : MonoBehaviour
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             OnHit(bullet.dmg);
             Destroy(collision.gameObject);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Border"))
-        {
-            switch (collision.gameObject.name)
-            {
-                case "Top":
-                    IsTouchTop = false;
-                    break;
-                case "Bottom":
-                    IsTouchBottom = false;
-                    break;
-                case "Right":
-                    IsTouchRight = false;
-                    break;
-                case "Left":
-                    IsTouchLeft = false;
-                    break;
-
-            }
         }
     }
 }

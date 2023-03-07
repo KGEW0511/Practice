@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 266576253066584130}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.2395253, y: -3.9285984, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -104,9 +104,9 @@ MonoBehaviour:
   isLeft: 0
   isRight: 0
   power: 2
-  speed: 3
+  speed: 1
   curShotDelay: 0
-  maxShotDelay: 0.3
+  maxShotDelay: 1
   health: 10
   enemyScore: 10
   player: {fileID: 0}

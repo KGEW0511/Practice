@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 9088559418312926609}
   - component: {fileID: 9088559418312926608}
-  - component: {fileID: 9088559418312926611}
   - component: {fileID: -6129709798398695829}
   - component: {fileID: -4146157134502904286}
   - component: {fileID: -7989050406828666378}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9088559418312926610}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.060492992, y: 3.4443278, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88,26 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &9088559418312926611
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9088559418312926610}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c0ae8b4f43da64744af8bd01f855f0d5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &-6129709798398695829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,8 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9329cf791d3f02644819256d7edb8416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprites: []
-  life: 0
+  speed: 1
+  life: 100
 --- !u!50 &-4146157134502904286
 Rigidbody2D:
   serializedVersion: 4

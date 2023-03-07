@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class Pain_Bar : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class Pain_Bar : MonoBehaviour
 
     void Awake()
     {
-        maxPain = player.pain;
+        maxPain = player.fuel;
     }
 
     void Update()

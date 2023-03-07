@@ -5,15 +5,28 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    Rigidbody2D rigid;
 
-    public Sprite[] sprites;
+    public int speed;
 
     public float life;
 
+    void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+
+        rigid.velocity = Vector3.down * speed;
+    }
+    void Update()
+    {
+        if(rigid.position.y < 3)
+        {
+            rigid.velocity = Vector3.down * 0;
+        }
+    }
     public void OnHit(float dmg, float invincibilityTime)
     {
         life -= dmg;
-        spriteRenderer.sprite = sprites[1];
         Invoke("ReturnSprite", 0.1f);
 
         if (life <= 0)
@@ -24,7 +37,7 @@ public class Boss : MonoBehaviour
 
     void ReturnSprite()
     {
-        spriteRenderer.sprite = sprites[0];
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
