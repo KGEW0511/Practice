@@ -42,7 +42,7 @@ public class SpawnManager : MonoBehaviour
             BossSpawnDelay += Time.deltaTime;
         }
         
-        if (BossSpawnDelay > 180)
+        if (BossSpawnDelay > 120)
         {
             GameObject boss = Instantiate(bossObj[GameObject.FindObjectOfType<GameManager>().stageIndex], new Vector3(0, 7, -1), Quaternion.Euler(0, 0, 0));
             BossSpawnDelay = 0;

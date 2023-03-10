@@ -20,9 +20,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-         time -= Time.deltaTime;
-         Player playerLogic = player.GetComponent<Player>();
-         scoreText.text = string.Format("{0:n0}", playerLogic.score);
+         time -= Time.deltaTime;;
+         scoreText.text = string.Format("{0:n0}", Player.score);
          timeText.text = string.Format("{0} : {1}", (int)time / 60, (int)time % 60);
     }
 }

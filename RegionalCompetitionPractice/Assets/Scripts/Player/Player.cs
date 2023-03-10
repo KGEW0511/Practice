@@ -15,17 +15,19 @@ public class Player : MonoBehaviour
     public float curShotDelay;
     public float fuel;
     public float life;
+    static public float difficulty;
 
     public bool IsInvincibility;
 
     public Sprite[] sprites;
     public AudioClip hitSound;
     public AudioClip shootSound;
-    public GameObject bulletObjA;
-    public GameObject bulletObjB;
+    public GameObject[] sBulletObjs;
+    public GameObject[] bBulletObjs;
     public SaveManager manager;
 
-    public int score;
+    static public int score;
+    static public int spriteColor;
 
     float h;
     float v;
@@ -45,8 +47,13 @@ public class Player : MonoBehaviour
         Move();
         Fire();
         Reload();
+        Fuel();
     }
-    
+    void Fuel()
+    {
+        fuel -= Time.deltaTime;
+    }
+
     void Reload()
     {
         curShotDelay += Time.deltaTime;
@@ -54,7 +61,7 @@ public class Player : MonoBehaviour
 
     void Fire()
     {
-        if (!Input.GetKey(KeyCode.D))
+        if (!Input.GetKeyDown(KeyCode.D))
             return;
 
         if (curShotDelay < maxShotDelay)
@@ -62,7 +69,34 @@ public class Player : MonoBehaviour
 
         switch (power)
         {
-            
+            case 1:
+                GameObject bullet = Instantiate(sBulletObjs[manager.spriteColor], transform.position, transform.rotation);
+                Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+                rigid.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                break;
+            case 2:
+                GameObject bulletL = Instantiate(sBulletObjs[manager.spriteColor], transform.position + new Vector3(-0.1f, 0, 0), transform.rotation);
+                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
+                rigidL.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+
+                GameObject bulletR = Instantiate(sBulletObjs[manager.spriteColor], transform.position + new Vector3(0.1f, 0, 0), transform.rotation);
+                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
+                rigidR.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                break;
+            case 3:
+                GameObject bulletM = Instantiate(bBulletObjs[manager.spriteColor], transform.position, transform.rotation);
+                Rigidbody2D rigidM = bulletM.GetComponent<Rigidbody2D>();
+                rigidM.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                break;
+            case 4:
+                GameObject bulletLL = Instantiate(bBulletObjs[manager.spriteColor], transform.position + new Vector3(-0.2f, 0, 0), transform.rotation);
+                Rigidbody2D rigidLL = bulletLL.GetComponent<Rigidbody2D>();
+                rigidLL.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+
+                GameObject bulletRR = Instantiate(bBulletObjs[manager.spriteColor], transform.position + new Vector3(0.2f, 0, 0), transform.rotation);
+                Rigidbody2D rigidRR = bulletRR.GetComponent<Rigidbody2D>();
+                rigidRR.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                break;
         }
         audioSource.clip = shootSound;
         audioSource.loop = false;
@@ -100,7 +134,7 @@ public class Player : MonoBehaviour
         rigid.velocity = moveVec * speed;
     }
 
-    void OnHit(float dmg)
+    public void OnHit(float dmg, float invincibilityTime)
     {
         audioSource.clip = hitSound;
         audioSource.loop = false;
@@ -108,7 +142,7 @@ public class Player : MonoBehaviour
         life -= dmg;
         spriteRenderer.color = new Color(1, 1, 1, 0.4f);
         IsInvincibility = true;
-        Invoke("Recovery", 1.5f);
+        Invoke("Recovery", invincibilityTime);
 
         if (life <= 0)
         {
@@ -141,7 +175,7 @@ public class Player : MonoBehaviour
         else if(collision.gameObject.tag == "EnemyBullet" && !IsInvincibility)
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            OnHit(bullet.dmg);
+            OnHit(bullet.dmg, 1f);
             Destroy(collision.gameObject);
         }
     }

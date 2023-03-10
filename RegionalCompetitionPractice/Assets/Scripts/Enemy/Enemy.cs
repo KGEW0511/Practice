@@ -11,11 +11,15 @@ public class Enemy : MonoBehaviour
     public float curShotDelay;
     public float maxShotDelay;
     public float health;
+    public float bulletSpeed;
 
     public int enemyScore;
 
     public GameObject bulletObj;
+    public GameObject[] itemObjs;
+    public GameObject boss;
 
+    GameObject player;
     GameManager gameManager;
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
@@ -24,6 +28,7 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
+        player = GameObject.Find("Player");
         
         rigid.velocity = Vector3.down * speed;
     }
@@ -54,17 +59,36 @@ public class Enemy : MonoBehaviour
                 case "A":
                     GameObject bulletA = Instantiate(bulletObj, transform.position, transform.rotation);
                     Rigidbody2D rigidA = bulletA.GetComponent<Rigidbody2D>();
-                    rigidA.AddForce(Vector2.down * 3, ForceMode2D.Impulse);
+
+                    Vector3 dirVecA = player.transform.position - transform.position;
+                    rigidA.AddForce(dirVecA.normalized * bulletSpeed, ForceMode2D.Impulse);
                     break;
                 case "B":
-                    GameObject bulletB = Instantiate(bulletObj, transform.position, transform.rotation);
-                    Rigidbody2D rigidB = bulletB.GetComponent<Rigidbody2D>();
-                    rigidB.AddForce(Vector2.down * 3, ForceMode2D.Impulse);
+                    for(int i = -5; i < 6; i+=5)
+                    {
+                        GameObject bulletB = Instantiate(bulletObj, transform.position, transform.rotation);
+                        Rigidbody2D rigidB = bulletB.GetComponent<Rigidbody2D>();
+
+                        Vector3 dirVecB = new Vector3(i + transform.position.x, -8f, 0) - transform.position;
+                        rigidB.AddForce(dirVecB.normalized * bulletSpeed, ForceMode2D.Impulse);
+                    }
                     break;
                 case "C":
                     GameObject bulletC = Instantiate(bulletObj, transform.position, transform.rotation);
                     Rigidbody2D rigidC = bulletC.GetComponent<Rigidbody2D>();
-                    rigidC.AddForce(Vector2.down * 3, ForceMode2D.Impulse);
+
+                    Vector3 dirVecC = player.transform.position - transform.position;
+                    rigidC.AddForce(dirVecC.normalized * bulletSpeed, ForceMode2D.Impulse);
+                    break;
+                case "Boss":
+                    for (int i = -20; i < 21; i+=4)
+                    {
+                        GameObject bulletB = Instantiate(bulletObj, transform.position, transform.rotation);
+                        Rigidbody2D rigidB = bulletB.GetComponent<Rigidbody2D>();
+
+                        Vector3 dirVecB = new Vector3(i + boss.GetComponent<Boss>().paternTime % 10 + transform.position.x, -8f, 0) - transform.position;
+                        rigidB.AddForce(dirVecB.normalized * bulletSpeed, ForceMode2D.Impulse);
+                    }
                     break;
             }
             curShotDelay = 0;
@@ -79,7 +103,7 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
-            GameObject.FindObjectOfType<Player>().score += enemyScore;
+            Player.score += enemyScore;
             ItemSpawn();
             Destroy(gameObject);
         }
@@ -92,10 +116,11 @@ public class Enemy : MonoBehaviour
 
     void ItemSpawn()
     {
+        int spawnRange = Random.Range(0, 6);
         int itemRange = Random.Range(0, 5);
-        switch (itemRange)
+        if(spawnRange > 4)
         {
-
+            Instantiate(itemObjs[itemRange], transform.position, Quaternion.Euler(0, 0, 0));
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

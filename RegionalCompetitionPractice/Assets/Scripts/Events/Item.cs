@@ -11,6 +11,8 @@ public class Item : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+
+        rigid.velocity = Vector3.down * 1;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -40,14 +42,17 @@ public class Item : MonoBehaviour
                     }
                     break;
                 case 3:
-                    if (player.fuel - 20 < 0)
+                    if (player.fuel + 20 > 100)
                     {
-                        player.fuel = 0;
+                        player.fuel = 100;
                     }
                     else
                     {
-                        player.fuel -= 20;
+                        player.fuel += 20;
                     }
+                    break;
+                 case 4:
+                    player.OnHit(0, 2f);
                     break;
             }
             Destroy(gameObject);

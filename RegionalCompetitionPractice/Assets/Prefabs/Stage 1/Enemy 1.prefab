@@ -100,17 +100,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: A
-  isFront: 1
-  isLeft: 0
-  isRight: 0
   power: 2
   speed: 1
   curShotDelay: 0
   maxShotDelay: 1
   health: 10
+  bulletSpeed: 5
   enemyScore: 10
-  player: {fileID: 0}
   bulletObj: {fileID: 7067616746283343595, guid: dee3c313c8543044389e773353c32b46, type: 3}
+  itemObjs:
+  - {fileID: 7047593091306370515, guid: cadf76a92ac4fe34a8a9eb48aff12dce, type: 3}
+  - {fileID: 5964117033398882659, guid: b9e0c76b9685034418561bd7e8a33463, type: 3}
+  - {fileID: 6518136893048167641, guid: 91992bc882b0cef499d19ea002aa759b, type: 3}
+  - {fileID: 2991367592670123697, guid: efb4faa428fdd2147b1c05d4b2dc76c9, type: 3}
+  - {fileID: 2991367592670123697, guid: efb4faa428fdd2147b1c05d4b2dc76c9, type: 3}
 --- !u!50 &8615629622372098233
 Rigidbody2D:
   serializedVersion: 4

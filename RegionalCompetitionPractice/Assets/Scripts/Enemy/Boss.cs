@@ -4,37 +4,42 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
     Rigidbody2D rigid;
 
-    public int speed;
+    int direction;
 
-    public float life;
+    public float paternTime;
+    public int speed;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-
-        rigid.velocity = Vector3.down * speed;
     }
     void Update()
     {
+        if(paternTime > 20)
+        {
+            direction = 1;
+        }
+        else if(paternTime < -20)
+        {
+            direction = 0;
+        }
+
+        if(direction == 1)
+        {
+            paternTime -= Time.deltaTime * 2;
+        }
+        else if(direction == 0)
+        {
+            paternTime += Time.deltaTime * 2;
+        }
+
         if(rigid.position.y < 3)
         {
             rigid.velocity = Vector3.down * 0;
         }
     }
-    public void OnHit(float dmg, float invincibilityTime)
-    {
-        life -= dmg;
-        Invoke("ReturnSprite", 0.1f);
-
-        if (life <= 0)
-        {
-
-        }
-    }
-
     void ReturnSprite()
     {
         
