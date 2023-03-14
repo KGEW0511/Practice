@@ -16,10 +16,8 @@ public class Button : MonoBehaviour
     {
         SceneManager.LoadScene("Choice");
     }
-
-    public void OnClickMenu()
+    public void OnClickMenuScene()
     {
-        Debug.Log("이기운지");
         SceneManager.LoadScene("Start");
     }
     public void OnClickHelp()
@@ -29,7 +27,7 @@ public class Button : MonoBehaviour
         rank.SetActive(false);
     }
 
-    public void OnClickBack()
+    public void OnClickMenu()
     {
         help.SetActive(false);
         menu.SetActive(true);
@@ -57,17 +55,21 @@ public class Button : MonoBehaviour
     }
     public void OnClickDifE()
     {
-        Player.difficulty = 1f;
+        Player.difficulty = 0.8f;
     }
     public void OnClickDifN()
     {
-        Player.difficulty = 2f;
+        Player.difficulty = 1f;
     }
     public void OnClickDifH()
     {
-        Player.difficulty = 3f;
+        Player.difficulty = 1.2f;
     }
 
+    public void OnClickRankUpload()
+    {
+        FindObjectOfType<Rank>().Upload();
+    }
     public void OnClickStage()
     {
         if(Player.difficulty != -1 && Player.spriteColor != -1)

@@ -32,23 +32,23 @@ public class Item : MonoBehaviour
                     }
                     break;
                 case 2:
-                    if (player.life + 20 > 100)
+                    if (player.life + 40 > 100)
                     {
                         player.life = 100;
                     }
                     else
                     {
-                        player.life += 20;
+                        player.life += 40;
                     }
                     break;
                 case 3:
-                    if (player.fuel + 20 > 100)
+                    if (player.fuel + 40 > 100)
                     {
                         player.fuel = 100;
                     }
                     else
                     {
-                        player.fuel += 20;
+                        player.fuel += 40;
                     }
                     break;
                  case 4:

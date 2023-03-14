@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3911050245393951246}
   m_Layer: 0
   m_Name: Boss Bullet
-  m_TagString: EnemyBullet
+  m_TagString: BossBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,5 +137,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dmg: 3
-  isDmg: 0
-  isPlayerBullet: 0

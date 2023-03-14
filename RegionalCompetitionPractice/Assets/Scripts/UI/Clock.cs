@@ -7,8 +7,6 @@ public class Clock : MonoBehaviour
 {
     float Value;
 
-    public GameManager gameManager;
-
     public Image LoadingBar;
 
 
@@ -19,6 +17,6 @@ public class Clock : MonoBehaviour
 
     void Update()
     {
-        LoadingBar.fillAmount = gameManager.time / Value;
+        LoadingBar.fillAmount = GameManager.time / Value;
     }
 }

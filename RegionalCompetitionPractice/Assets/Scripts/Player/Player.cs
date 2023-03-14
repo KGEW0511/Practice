@@ -9,37 +9,44 @@ public class Player : MonoBehaviour
     SpriteRenderer spriteRenderer;
     AudioSource audioSource;
 
+
     public float speed;
     public float power;
     public float maxShotDelay;
     public float curShotDelay;
     public float fuel;
     public float life;
-    static public float difficulty;
+    static public float difficulty = -1;
+    static public float score;
+    public float skill1Time;
+    public float skill2Time;
+
 
     public bool IsInvincibility;
 
+    public SkillUI Skill;
     public Sprite[] sprites;
     public AudioClip hitSound;
     public AudioClip shootSound;
+    public GameObject skill1;
     public GameObject[] sBulletObjs;
     public GameObject[] bBulletObjs;
-    public SaveManager manager;
 
-    static public int score;
-    static public int spriteColor;
+    public int skill1Count = 3;
+    public int skill2Count = 3;
+    static public int spriteColor = -1;
 
     float h;
     float v;
     void Awake()
     {
+
         audioSource = GetComponent<AudioSource>();
         rigid = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        manager = GameObject.FindObjectOfType<SaveManager>();
-        spriteRenderer.sprite = sprites[manager.spriteColor];
+        spriteRenderer.sprite = sprites[spriteColor];
     }
 
     void Update()
@@ -48,10 +55,16 @@ public class Player : MonoBehaviour
         Fire();
         Reload();
         Fuel();
+        Skill1();
+        Skill2();
     }
     void Fuel()
     {
         fuel -= Time.deltaTime;
+        if(fuel <= 0)
+        {
+            GameManager.GameOver();
+        }
     }
 
     void Reload()
@@ -70,30 +83,30 @@ public class Player : MonoBehaviour
         switch (power)
         {
             case 1:
-                GameObject bullet = Instantiate(sBulletObjs[manager.spriteColor], transform.position, transform.rotation);
+                GameObject bullet = Instantiate(sBulletObjs[spriteColor], transform.position, transform.rotation);
                 Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
                 rigid.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
                 break;
             case 2:
-                GameObject bulletL = Instantiate(sBulletObjs[manager.spriteColor], transform.position + new Vector3(-0.1f, 0, 0), transform.rotation);
-                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
-                rigidL.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
-
-                GameObject bulletR = Instantiate(sBulletObjs[manager.spriteColor], transform.position + new Vector3(0.1f, 0, 0), transform.rotation);
-                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
-                rigidR.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
-                break;
-            case 3:
-                GameObject bulletM = Instantiate(bBulletObjs[manager.spriteColor], transform.position, transform.rotation);
+                GameObject bulletM = Instantiate(bBulletObjs[spriteColor], transform.position, transform.rotation);
                 Rigidbody2D rigidM = bulletM.GetComponent<Rigidbody2D>();
                 rigidM.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
                 break;
+            case 3:
+                GameObject bulletL = Instantiate(sBulletObjs[spriteColor], transform.position + new Vector3(-0.1f, 0, 0), transform.rotation);
+                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
+                rigidL.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+
+                GameObject bulletR = Instantiate(sBulletObjs[spriteColor], transform.position + new Vector3(0.1f, 0, 0), transform.rotation);
+                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
+                rigidR.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                break;
             case 4:
-                GameObject bulletLL = Instantiate(bBulletObjs[manager.spriteColor], transform.position + new Vector3(-0.2f, 0, 0), transform.rotation);
+                GameObject bulletLL = Instantiate(bBulletObjs[spriteColor], transform.position + new Vector3(-0.2f, 0, 0), transform.rotation);
                 Rigidbody2D rigidLL = bulletLL.GetComponent<Rigidbody2D>();
                 rigidLL.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
 
-                GameObject bulletRR = Instantiate(bBulletObjs[manager.spriteColor], transform.position + new Vector3(0.2f, 0, 0), transform.rotation);
+                GameObject bulletRR = Instantiate(bBulletObjs[spriteColor], transform.position + new Vector3(0.2f, 0, 0), transform.rotation);
                 Rigidbody2D rigidRR = bulletRR.GetComponent<Rigidbody2D>();
                 rigidRR.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
                 break;
@@ -134,19 +147,72 @@ public class Player : MonoBehaviour
         rigid.velocity = moveVec * speed;
     }
 
+    void Skill1()
+    {
+        skill1Time += Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.W) && (skill1Time < 10f || skill1Count == 0))
+        {
+            Skill.NoSkill1();
+        }
+        else if (Input.GetKeyDown(KeyCode.W) && skill1Time > 10f && skill1Count > 0)
+        {
+            if (life + 20 > 100)
+            {
+                life = 100;
+            }
+            else
+            {
+                life += 20;
+            }
+
+            if (fuel + 20 > 100)
+            {
+                fuel = 100;
+            }
+            else
+            {
+                fuel += 20;
+            }
+            skill1Time = 0;
+            skill1Count--;
+        }
+    }
+
+    void Skill2()
+    {
+        skill2Time += Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.E) && (skill2Time < 10 || skill2Count == 0))
+        {
+            Skill.NoSkill2();
+        }
+        else if (Input.GetKeyDown(KeyCode.E) && skill2Time > 10 && skill2Count > 0)
+        {
+            GameObject a = Instantiate(skill1, transform.position, transform.rotation);
+            skill2Time = 0;
+            Invoke("SkillDestroy", 1f);
+            skill2Count--;
+        }
+    }
+    public void SkillDestroy()
+    {
+        Destroy(GameObject.Find("Skill1(Clone)"));
+    }
     public void OnHit(float dmg, float invincibilityTime)
     {
-        audioSource.clip = hitSound;
-        audioSource.loop = false;
-        audioSource.Play();
-        life -= dmg;
-        spriteRenderer.color = new Color(1, 1, 1, 0.4f);
-        IsInvincibility = true;
-        Invoke("Recovery", invincibilityTime);
+        if (!IsInvincibility)
+        {
+            audioSource.clip = hitSound;
+            audioSource.loop = false;
+            audioSource.Play();
+            life -= dmg;
+            spriteRenderer.color = new Color(1, 1, 1, 0.4f);
+            IsInvincibility = true;
+            Invoke("Recovery", invincibilityTime);
+        }
 
         if (life <= 0)
         {
-            
+            GameManager.GameOver();
         }
     }
 
@@ -160,22 +226,12 @@ public class Player : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("Enemy") && !IsInvincibility)
         {
-            switch (collision.gameObject.name)
-            {
-                case "Enemy A":
-                    break;
-                case "Enemy B":
-                    break;
-                case "Enemy C":
-                    break;
-                case "Boss":
-                    break;
-            }
+            OnHit(collision.gameObject.GetComponent<Enemy>().power, 1f);
+            Destroy(collision.gameObject);
         }
-        else if(collision.gameObject.tag == "EnemyBullet" && !IsInvincibility)
+        else if(collision.gameObject.tag == "EnemyBullet" || collision.gameObject.tag == "BossBullet"  && !IsInvincibility)
         {
-            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
-            OnHit(bullet.dmg, 1f);
+            OnHit(collision.gameObject.GetComponent<Bullet>().dmg, 1f);
             Destroy(collision.gameObject);
         }
     }

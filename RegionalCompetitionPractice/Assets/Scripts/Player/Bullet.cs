@@ -12,9 +12,17 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        else if(collision.gameObject.CompareTag("PlayerBullet"))
+        else if(collision.gameObject.CompareTag("EnemyBullet") && gameObject.CompareTag("PlayerBullet"))
         {
-            Destroy(gameObject);
+            Destroy(collision.gameObject);
+        }
+
+        if (gameObject.name == "Skill1(Clone)")
+        {
+            if (collision.gameObject.CompareTag("BossBullet"))
+            {
+                Destroy(collision.gameObject);
+            }
         }
     }
 }

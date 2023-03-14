@@ -10,10 +10,10 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] EnemyObjs;
 
     public float maxSpawnDelay;
-    public float curSpawnDelay;
+    static public float curSpawnDelay;
     public float BossSpawnDelay;
 
-    public bool isBossSpawn;
+    static public bool isBossSpawn;
 
     void Awake()
     {
@@ -44,7 +44,7 @@ public class SpawnManager : MonoBehaviour
         
         if (BossSpawnDelay > 120)
         {
-            GameObject boss = Instantiate(bossObj[GameObject.FindObjectOfType<GameManager>().stageIndex], new Vector3(0, 7, -1), Quaternion.Euler(0, 0, 0));
+            GameObject boss = Instantiate(bossObj[GameManager.stageIndex], new Vector3(0, 7, -1), Quaternion.Euler(0, 0, 0));
             BossSpawnDelay = 0;
             isBossSpawn = true;
         }
