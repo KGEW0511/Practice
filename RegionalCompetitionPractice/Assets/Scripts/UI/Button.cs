@@ -5,9 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class Button : MonoBehaviour
 {
+    public GameObject setting;
     public GameObject menu;
     public GameObject help;
     public GameObject rank;
+
+    public bool On = false;
     public void OnClickExit()
     {
         Application.Quit();
@@ -75,6 +78,22 @@ public class Button : MonoBehaviour
         if(Player.difficulty != -1 && Player.spriteColor != -1)
         {
             SceneManager.LoadScene("Stage");
+        }
+    }
+
+    public void OnClickSetting()
+    {
+        if(!On)
+        {
+            On = true;
+            Time.timeScale = 0;
+            setting.SetActive(true);
+        }
+        else
+        {
+            On = false;
+            Time.timeScale = 1;
+            setting.SetActive(false);
         }
     }
 }

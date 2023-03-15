@@ -641,6 +641,7 @@ MonoBehaviour:
   bulletSpeed: 2
   health: 100
   enemyScore: 2000
+  Razer: {fileID: 1047490423889626825, guid: ed5ce8c312975484f90fab015d9601f5, type: 3}
   bulletObj: {fileID: 7067616746283343595, guid: ea525a2586717d347ac1769113935898, type: 3}
   itemObjs:
   - {fileID: 6518136893048167641, guid: 91992bc882b0cef499d19ea002aa759b, type: 3}

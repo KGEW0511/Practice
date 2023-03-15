@@ -20,9 +20,25 @@ public class GameManager : MonoBehaviour
         stageIndex = 0;
         time = 600;
     }
-
+     
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            switch (stageIndex)
+            {
+                case 0:
+                    stageIndex = 1;
+                    break;
+                case 1:
+                    stageIndex = 2;
+                    break;
+                case 2:
+                    stageIndex = 0;
+                    break;
+            }
+        }
+
         time -= Time.deltaTime;
         scoreText.text = string.Format("{0:n0}", Player.score);
         timeText.text = string.Format("{0} : {1}", (int)time / 60, (int)time % 60);

@@ -57,6 +57,37 @@ public class Player : MonoBehaviour
         Fuel();
         Skill1();
         Skill2();
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            GameObject cheat1 = Instantiate(skill1, transform.position, transform.rotation);
+            cheat1.GetComponent<Bullet>().dmg = 1000f;
+            Destroy(cheat1, 0.1f);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            power = 4;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            skill1Time = 10;
+            skill1Count = 3;
+
+            skill2Time = 10;
+            skill2Count = 3;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            life = 100;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F5))
+        {
+            fuel = 100;
+        }
     }
     void Fuel()
     {
@@ -229,10 +260,14 @@ public class Player : MonoBehaviour
             OnHit(collision.gameObject.GetComponent<Enemy>().power, 1f);
             Destroy(collision.gameObject);
         }
-        else if(collision.gameObject.tag == "EnemyBullet" || collision.gameObject.tag == "BossBullet"  && !IsInvincibility)
+        else if(collision.gameObject.CompareTag("EnemyBullet") || collision.gameObject.CompareTag("BossBullet")  && !IsInvincibility)
         {
             OnHit(collision.gameObject.GetComponent<Bullet>().dmg, 1f);
             Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.CompareTag("Razer"))
+        {
+            OnHit(5, 1f);
         }
     }
 }

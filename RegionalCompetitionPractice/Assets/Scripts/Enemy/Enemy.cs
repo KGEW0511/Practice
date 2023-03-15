@@ -14,9 +14,12 @@ public class Enemy : MonoBehaviour
     public float health;
     public float enemyScore;
 
+    public GameObject Razer;
     public GameObject bulletObj;
     public GameObject[] itemObjs;
     public GameObject boss;
+
+    public int bossPaternCount;
 
     GameObject player;
     Rigidbody2D rigid;
@@ -103,18 +106,29 @@ public class Enemy : MonoBehaviour
                         rigidB.AddForce(dirVecB.normalized * bulletSpeed, ForceMode2D.Impulse);
                     }
                     break;
-
-                    break;
                 case "BossEnd":
                     for (int i = -20; i < 21; i += 3)
                     {
                         GameObject bulletB = Instantiate(bulletObj, transform.position, transform.rotation);
                         Rigidbody2D rigidB = bulletB.GetComponent<Rigidbody2D>();
-
+                            
                         Vector3 dirVecB = new Vector3(i + boss.GetComponent<Boss>().paternTime1 % 10 + transform.position.x, -8f, 0) - transform.position;
                         rigidB.AddForce(dirVecB.normalized * bulletSpeed, ForceMode2D.Impulse);
                     }
- 
+                    bossPaternCount++;
+
+
+
+                    if(bossPaternCount >= 5)
+                    {
+                        for (int i = -6; i < 7; i += 3)
+                        {
+                            GameObject RazerM = Instantiate(Razer, new Vector3(transform.position.x + (i * 1), transform.position.y - 5, transform.position.z)
+                                , transform.rotation);
+                            Destroy(RazerM, 1f);
+                        }
+                        bossPaternCount = 0;
+                    }
                     break;
             }
             curShotDelay = 0;
